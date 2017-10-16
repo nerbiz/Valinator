@@ -4,7 +4,7 @@ JavaScript class for validating input elements.
 I need your clothes, your boots, your motorcycle and your HTML forms 😎
 
 ## Installation
-Apart from downloading or cloning this repo, you can include this project with [Composer](https://getcomposer.org/):
+Use Bower to install ZeeValinator.
 
 ```
 bower install zee-valinator --save
