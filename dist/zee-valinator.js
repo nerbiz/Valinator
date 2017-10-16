@@ -271,11 +271,11 @@ function ZeeValinator() {
                 // Value needs to match the value of another element
                 return (value == $('[name="' + option + '"]').val());
             },
-            max: function(value, option) {
+            maxLength: function(value, option) {
                 // Value needs to have a maximum length
                 return (value.length <= parseInt(option, 10));
             },
-            min: function(value, option) {
+            minLength: function(value, option) {
                 // Value needs to have a minimum length
                 return (value.length >= parseInt(option, 10));
             },
