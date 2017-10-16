@@ -1,11 +1,11 @@
 {
-  "name": "valinator",
+  "name": "zee-valinator",
   "description": "JavaScript class for validating input elements",
   "authors": [
     "Sybren Dijkstra"
   ],
   "license": "Unlicense",
-  "homepage": "https://github.com/nerbiz/Valinator",
+  "homepage": "https://github.com/nerbiz/zee-valinator",
   "ignore": [
     "**/.*",
     "node_modules",
