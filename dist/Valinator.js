@@ -174,7 +174,7 @@ function Valinator() {
      *                                     return 'Please tell us what your hobby is';
      *                             }
      *                         }
-     * @return  Array  Collection of error elements as objects: {$element, errormessage}
+     * @return  Array  Collection of error elements as objects: {$element, message}
      */
     self.validate = function(rules) {
         // Make sure the rules are an array
