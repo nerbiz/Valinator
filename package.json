@@ -1,0 +1,12 @@
+{
+  "name": "valinator",
+  "author": "Sybren Dijkstra",
+  "version": "0.0.1",
+  "license" : "Unlicense",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-plumber": "^1.1.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^3.0.0"
+  }
+}

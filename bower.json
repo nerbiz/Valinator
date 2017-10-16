@@ -1,0 +1,17 @@
+{
+  "name": "valinator",
+  "description": "JavaScript class for validating input elements",
+  "authors": [
+    "Sybren Dijkstra"
+  ],
+  "license": "Unlicense",
+  "homepage": "https://github.com/nerbiz/Valinator",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {
+    "jquery": "^3.2.1"
+  }
+}
