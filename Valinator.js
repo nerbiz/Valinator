@@ -2,24 +2,70 @@ function Valinator() {
     var self = this;
 
     /**
-     * The class to add to an input element that contains an error
+     * The CSS class to add to an input element that contains an error
      * @type String
      */
-    self.errorClass = 'valinator-error';
+    self.inputErrorClass = 'valinator-error';
 
     /**
-     * The element holding error text, should be cloned and added after input fields
-     * And the CSS selector for this element
-     * @type jQuery|String
+     * The HTML tag to use for the error message element
+     * @type String
      */
-    self.$errorSpan = $('<span class="valinator-error-message"></span>');
-    self.errorSpanSelector = 'span.valinator-error-message';
+    self.errorMessageTag = 'span';
+
+    /**
+     * The CSS class of the error message element that will be added to an input element
+     * @type String
+     */
+    self.errorMessageClass = 'valinator-error-message';
+
+    /**
+     * The CSS selector for the error message element
+     * @type String
+     */
+    self.errorMessageSelector = self.errorMessageTag + '.' + self.errorMessageClass;
 
     /**
      * All the validation checks, in name:function pairs
      * @type Object
      */
     self.checks = {};
+
+
+
+    /**
+     * Set a custom CSS class for input fields that contain an error
+     * @param String  cssClass
+     */
+    self.setInputErrorClass = function(cssClass) {
+        self.inputErrorClass = cssClass;
+    };
+
+
+
+    /**
+     * Set a custom HTML tag to use for adding error message elements
+     * @param String  htmlTag
+     */
+    self.setErrorMessageTag = function(htmlTag) {
+        self.errorMessageTag = htmlTag;
+
+        // Also update the error message selector accordingly
+        self.errorMessageSelector = self.errorMessageTag + '.' + self.errorMessageClass;
+    };
+
+
+
+    /**
+     * Set a custom CSS class for the error message elements
+     * @param String  cssClass
+     */
+    self.setErrorMessageClass = function(cssClass) {
+        self.errorMessageClass = cssClass;
+
+        // Also update the error message selector accordingly
+        self.errorMessageSelector = self.errorMessageTag + '.' + self.errorMessageClass;
+    };
 
 
 
@@ -62,9 +108,9 @@ function Valinator() {
      */
     self.removeError = function($element) {
         // Remove the error class from the input element
-        $element.removeClass(self.errorClass)
+        $element.removeClass(self.inputErrorClass)
             // Then remove the error message element
-            .next(self.errorSpanSelector)
+            .next(self.errorMessageSelector)
             .remove();
     };
 
@@ -77,13 +123,16 @@ function Valinator() {
      */
     self.setError = function($element, message) {
         // Add an error message element, if it's not there yet
-        if($element.next(self.errorSpanSelector).length < 1)
-            self.$errorSpan.clone().insertAfter($element);
+        if($element.next(self.errorMessageSelector).length < 1) {
+            $('<' + self.errorMessageTag + '/>')
+                .addClass(self.errorMessageClass)
+                .insertAfter($element);
+        }
 
         // Add the error class to the input element
-        $element.addClass(self.errorClass)
+        $element.addClass(self.inputErrorClass)
             // Then set the error message in the error message element
-            .next(self.errorSpanSelector)
+            .next(self.errorMessageSelector)
             .text(message);
 
         // When the value of the element changes, remove the error
