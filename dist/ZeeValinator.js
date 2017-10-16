@@ -1,11 +1,11 @@
-function Valinator() {
+function ZeeValinator() {
     var self = this;
 
     /**
      * The CSS class to add to an input element that contains an error
      * @type String
      */
-    self.inputErrorClass = 'valinator-error';
+    self.inputErrorClass = 'zee-valinator-error';
 
     /**
      * The HTML tag to use for the error message element
@@ -17,7 +17,7 @@ function Valinator() {
      * The CSS class of the error message element that will be added to an input element
      * @type String
      */
-    self.errorMessageClass = 'valinator-error-message';
+    self.errorMessageClass = 'zee-valinator-error-message';
 
     /**
      * The CSS selector for the error message element

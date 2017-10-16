@@ -6,7 +6,7 @@ var uglify = require('gulp-uglify');
 
 
 gulp.task('js', function() {
-    gulp.src('dist/Valinator.js')
+    gulp.src('dist/ZeeValinator.js')
         .pipe(plumber())
         .pipe(uglify())
         .pipe(rename({
@@ -18,5 +18,5 @@ gulp.task('js', function() {
 
 
 gulp.task('default', ['js'], function() {
-    gulp.watch('dist/Valinator.js', ['js']);
+    gulp.watch('dist/ZeeValinator.js', ['js']);
 });
