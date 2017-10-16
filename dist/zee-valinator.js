@@ -251,31 +251,13 @@ function ZeeValinator() {
      */
     (self.setChecks = function() {
         self.newCheck({
-            required: function(value, option) {
-                // Value can't be empty
-                return (value != '');
+            alphanumeric: function(value, option) {
+                // Value needs to be alphanumeric
+                return (value.match(/^[a-z\d]+$/i));
             },
             email: function(value, option) {
                 // Value needs to be a valid email address
                 return (value.match(/.+?@.+?\..+/));
-            },
-            phone: function(value, option) {
-                // Value needs to be a valid phone number
-                return (value.match(/^[\d\(\) \+-]+$/));
-            },
-            name: function(value, option) {
-                // Value needs to be a valid name
-                // Remove accents, before validating the alphabetical characters
-                var nameNoAccents = App.characters.removeAccents(value);
-                return (nameNoAccents.match(/^[a-z0-9 /,.-]+$/i));
-            },
-            min: function(value, option) {
-                // Value needs to have a minimum length
-                return (value.length >= parseInt(option, 10));
-            },
-            max: function(value, option) {
-                // Value needs to have a maximum length
-                return (value.length <= parseInt(option, 10));
             },
             length: function(value, option) {
                 // Value needs to have a fixed length
@@ -289,14 +271,32 @@ function ZeeValinator() {
                 // Value needs to match the value of another element
                 return (value == $('[name="' + option + '"]').val());
             },
+            max: function(value, option) {
+                // Value needs to have a maximum length
+                return (value.length <= parseInt(option, 10));
+            },
+            min: function(value, option) {
+                // Value needs to have a minimum length
+                return (value.length >= parseInt(option, 10));
+            },
+            name: function(value, option) {
+                // Value needs to be a valid name
+                // Remove accents, before validating the alphabetical characters
+                var nameNoAccents = App.characters.removeAccents(value);
+                return (nameNoAccents.match(/^[a-z0-9 /,.-]+$/i));
+            },
             numeric: function(value, option) {
                 // Value needs to be a number
                 // From: https://github.com/angular/angular/blob/4.3.x/packages/common/src/pipes/number_pipe.ts#L172
                 return ( ! isNaN(value - parseFloat(value)));
             },
-            alphanumeric: function(value, option) {
-                // Value needs to be alphanumeric
-                return (value.match(/^[a-z\d]+$/i));
+            phone: function(value, option) {
+                // Value needs to be a valid phone number
+                return (value.match(/^[\d\(\) \+-]+$/));
+            },
+            required: function(value, option) {
+                // Value can't be empty
+                return (value != '');
             }
         });
     })();
