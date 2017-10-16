@@ -1,5 +1,9 @@
 # Release notes
 
+## 0.9.3
+
+* Replaced a wrong copy-pasted line in readme.
+
 ## 0.9.2
 
 * Added documentation and other 'readme' info.
