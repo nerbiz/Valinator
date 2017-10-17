@@ -53,13 +53,15 @@ validationRules.push({
 validationRules.push({
     element: 'clothes',
     rules: {
-        // To make a rule conditional, or more advanced in any way, use a function
-        // In this example, clothes (including boots) are only needed when naked
-        // If the rule applies, return the error message string, otherwise return nothing,
-        // or anything that isn't a string
-        // Please note:
-        //   ZeeValinator checks for a returned string, so '' will still be treated as an error message,
-        //   so it could then add the error class to the input element, and add an error message element
+        /*
+        To make a rule conditional, or more advanced in any way, use a function
+        In this example, clothes (including boots) are only needed when naked
+        If the rule applies, return the error message string, otherwise return nothing,
+        or anything that isn't a string
+        Please note:
+            ZeeValinator checks for a returned string, so '' will still be treated as an error message,
+            so it could then add the error class to the input element, and add an error message element
+        */
         required: function() {
             var hasClothes = $('input[name="has_clothes"]').prop('checked');
 
@@ -75,7 +77,7 @@ The validate() method returns an array of objects, containing elements that have
 
 ZeeValinator stops after the first error, per element. So if there are 3 rules for an element, and the second one fails, the third rule will not be checked, and it will move on to the next element, if there is one of course.
 
-ZeeValinator sets the CSS class 'zee-valinator-error' on input elements that contain an error, and it creates a span element with the 'zee-valinator-error-message' CSS class for the error messages. To change these classes, use these methods:
+ZeeValinator sets the CSS class 'zee-valinator-error' on input elements that contain an error, and it creates a span element with the 'zee-valinator-error-message' CSS class for the error messages, right after the corresponding input element.
 
 ```js
 // Pass validation rules to the validate() method
