@@ -1,5 +1,12 @@
 # Release notes
 
+## 0.10
+
+* Added 'minNumber' and 'maxNumber' checks.
+* Improved documentation.
+* Fixed a regular expression typo in the 'name' check.
+* Renamed the 'name' check to 'personName'.
+
 ## 0.9.3
 
 * Replaced a wrong copy-pasted line in readme.
