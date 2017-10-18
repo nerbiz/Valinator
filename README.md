@@ -44,8 +44,12 @@ validationRules.push({
     rules: {
         // Multiple rules for the same input element are possible
         required: 'Please fill in a password, like h4st4-l4-v1st4 or something',
-        // Here is a rule with an option, which is separated from the message by a pipe charater
-        // In this example, the 'password' element needs to have the same value as the 'password_check' element
+        /*
+        Here is a rule with an option,
+        which is separated from the message by a pipe charater.
+        In this example, the 'password' element needs to have the same value
+        as the 'password_check' element
+        */
         matchWith: 'password_check|Passwords do not match!'
     }
 });
@@ -59,8 +63,10 @@ validationRules.push({
         If the rule applies, return the error message string, otherwise return nothing,
         or anything that isn't a string
         Please note:
-            ZeeValinator checks for a returned string, so '' will still be treated as an error message,
-            so it could then add the error class to the input element, and add an error message element
+            ZeeValinator checks for a returned string,
+            so '' will still be treated as an error message,
+            so it could then add the error class to the input element,
+            and add an error message element
         */
         required: function() {
             var hasClothes = $('input[name="has_clothes"]').prop('checked');
@@ -122,7 +128,7 @@ This is the list of all validations that ZeeValinator has out of the box, please
     * length: '8|Value needs to be at least 8 characters long'
 * **minNumber**: Needs to be a number, and higher than or equal to #.
     * '8|Value cannot be lower than 8'
-* **name**: Needs to be a valid name (person).
+* **personName**: Needs to be a valid person name.
 * **numeric**: Needs to be a number.
 * **phone**: Needs to be a valid phone number.
 * **required**: Needs to be filled in, selected or checked.
