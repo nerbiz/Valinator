@@ -287,7 +287,7 @@ function ZeeValinator() {
                 // Value needs to be a number, and higher than or equal to the option
                 return ( ! isNaN(value - parseFloat(value))  &&  value >= option);
             },
-            name: function(value, option) {
+            personName: function(value, option) {
                 // Value needs to be a valid name
                 // Remove accents, before validating the alphabetical characters
                 var nameNoAccents = App.characters.removeAccents(value);

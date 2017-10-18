@@ -128,7 +128,7 @@ This is the list of all validations that ZeeValinator has out of the box, please
     * length: '8|Value needs to be at least 8 characters long'
 * **minNumber**: Needs to be a number, and higher than or equal to #.
     * '8|Value cannot be lower than 8'
-* **name**: Needs to be a valid name (person).
+* **personName**: Needs to be a valid person name.
 * **numeric**: Needs to be a number.
 * **phone**: Needs to be a valid phone number.
 * **required**: Needs to be filled in, selected or checked.
