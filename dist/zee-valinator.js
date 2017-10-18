@@ -291,7 +291,7 @@ function ZeeValinator() {
                 // Value needs to be a valid name
                 // Remove accents, before validating the alphabetical characters
                 var nameNoAccents = App.characters.removeAccents(value);
-                return (nameNoAccents.match(/^[a-z0-9 /,.-]+$/i));
+                return (nameNoAccents.match(/^[a-z0-9 \/,.-]+$/i));
             },
             numeric: function(value, option) {
                 // Value needs to be a number
