@@ -275,15 +275,23 @@ function ZeeValinator() {
                 // Value needs to have a maximum length
                 return (value.length <= parseInt(option, 10));
             },
+            maxNumber: function(value, option) {
+                // Value needs to be a number, and lower than or equal to the option
+                return ( ! isNaN(value - parseFloat(value))  &&  value <= option);
+            },
             minLength: function(value, option) {
                 // Value needs to have a minimum length
                 return (value.length >= parseInt(option, 10));
+            },
+            minNumber: function(value, option) {
+                // Value needs to be a number, and higher than or equal to the option
+                return ( ! isNaN(value - parseFloat(value))  &&  value >= option);
             },
             name: function(value, option) {
                 // Value needs to be a valid name
                 // Remove accents, before validating the alphabetical characters
                 var nameNoAccents = App.characters.removeAccents(value);
-                return (nameNoAccents.match(/^[a-z0-9 /,.-]+$/i));
+                return (nameNoAccents.match(/^[a-z0-9 \/,.-]+$/i));
             },
             numeric: function(value, option) {
                 // Value needs to be a number
