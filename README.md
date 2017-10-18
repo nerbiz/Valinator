@@ -132,7 +132,7 @@ zeeValinator.setErrorMessageTag('div');
 zeeValinator.setErrorMessageClass('new-error-message-class');
 ```
 
-ZeeValinator comes shipped with many validation options, but you can add your own, or overwrite the existing ones. The newCheck() method needs the name of the validation, and the function that does the validation. The function takes a value and option and needs to return a boolean, true for passed, false for failed. The option parameter is optional, and only used for validations like 'minLength' or 'matchWith'.
+ZeeValinator comes shipped with many validation options, but you can add your own, or overwrite the existing ones. The newCheck() method needs the name of the validation, and the function that does the validation, alternatively, it accepts an object with name:function pairs. The function takes a value and option and needs to return a boolean, true for passed, false for failed. The option parameter is optional, and only used for validations like 'minLength' or 'matchWith'.
 
 ```js
 // Create new validation logic
@@ -154,11 +154,23 @@ zeeValinator.newCheck('required', function(value, option) {
     // Apart from not being empty (required), the value has to be 'motorcycle'
     return (value == 'motorcycle');
 });
+
+// The above can also be done with 1 call, using an object as the only argument
+zeeValinator.newCheck({
+    isJohnConnor: function(value, option) {
+        // See if the person filling in your form is John Connor
+        return (value == 'John Connor');
+    },
+    required: function(value, option) {
+        // Apart from not being empty (required), the value has to be 'motorcycle'
+        return (value == 'motorcycle');
+    }
+});
 ```
 
 ## Styling
 Only 2 CSS selectors are needed in your styling.  
-Of course this differs if you've set some other tag or CSS class (see the 'Configuring' section), but even mister T-1000 figured that out already.
+Of course this differs if you've set some other tag or CSS class (see the 'Configuring' section).
 
 ```css
 /* Input elements that contain errors */
