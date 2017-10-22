@@ -1,8 +1,10 @@
 {
   "name": "zee-valinator",
+  "version": "0.11",
+  "description": "JavaScript class for validating input elements",
   "author": "Sybren Dijkstra",
-  "version": "0.0.1",
-  "license" : "Unlicense",
+  "license": "Unlicense",
+  "homepage": "https://github.com/nerbiz/zee-valinator",
   "devDependencies": {
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",
