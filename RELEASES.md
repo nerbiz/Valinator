@@ -1,5 +1,10 @@
 # Release notes
 
+## 0.11
+
+* Added ZeeValinatorCharacters, which takes care of accented characters.
+* Fixed: referencing the non-existing 'App.characters'.
+
 ## 0.10.1
 
 * Added the version to bower.json, update should be picked up now.
