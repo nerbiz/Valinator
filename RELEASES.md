@@ -1,5 +1,9 @@
 # Release notes
 
+## 0.10.1
+
+* Added the version to bower.json, update should be picked up now.
+
 ## 0.10
 
 * Added 'minNumber' and 'maxNumber' checks.
