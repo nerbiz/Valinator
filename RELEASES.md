@@ -1,5 +1,9 @@
 # Release notes
 
+## 0.11.0
+
+* Only changed the version from 0.11 to 0.11.0 (semver). Bower wasn't seeing the last update, hopefully now it will.
+
 ## 0.11
 
 * Added ZeeValinatorCharacters, which takes care of accented characters.
