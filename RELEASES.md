@@ -1,5 +1,10 @@
 # Release notes
 
+## 0.12.1
+
+* Non-existing input elements are now skipped.
+* Disabled input elements are now skipped.
+
 ## 0.12.0
 
 * Added an easy way of setting the same validation rules for multiple input elements.
