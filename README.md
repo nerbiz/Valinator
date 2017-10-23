@@ -76,6 +76,19 @@ validationRules.push({
         }
     }
 });
+
+validationRules.push({
+    /*
+    It is also possible to do the same validation on multiple elements,
+    using an element array.
+    In this case, a valid color needs to be given in 3 input elements.
+    Strings and jQuery objects can be mixed in the array.
+    */
+    element: ['clothes', $('input[name="boots"]'), 'motorcycle'],
+    rules: {
+        hexColor: 'Please set a valid color'
+    }
+});
 ```
 
 #### Then run the validation rules!
@@ -114,6 +127,7 @@ This is the list of all validations that ZeeValinator has out of the box, please
 
 * **alphanumeric**: Needs to contain only letters and numbers (case-insensitive).
 * **email**: Needs to be a valid email address.
+* **hexColor**: Needs to be a valid hexadecimal color (#xxx or #xxxxxx).
 * **length**: Needs to be exactly # characters long.
     * length: '8|Value needs to be exactly 8 characters long'
 * **match**: Needs to match an exact value.
