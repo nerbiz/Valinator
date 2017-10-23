@@ -265,6 +265,12 @@ function ZeeValinator() {
                 // Value needs to be a valid email address
                 return (value.match(/.+?@.+?\..+/));
             },
+            hexColor: function(value, option) {
+                // Value needs to be a hexadecimal color, #xxx or #xxxxxx
+                if(value.match(/^#([a-f\d]{3}){1,2}$/gi))
+                    return true;
+                return false;
+            },
             length: function(value, option) {
                 // Value needs to have a fixed length
                 return (value.length == parseInt(option, 10));
