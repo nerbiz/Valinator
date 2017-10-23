@@ -101,7 +101,7 @@ function ZeeValinator() {
      */
     self.ensureJquery = function(element) {
         if($.type(element) == 'string')
-            element = $('[name="' + rule.element + '"]');
+            element = $('[name="' + element + '"]');
 
         return element;
     };
