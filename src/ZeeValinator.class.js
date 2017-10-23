@@ -266,17 +266,18 @@ function ZeeValinator() {
         self.newCheck({
             alphanumeric: function(value, option) {
                 // Value needs to be alphanumeric
-                return (value.match(/^[a-z\d]+$/i));
+                var result = value.match(/^[a-z\d]+$/gi);
+                return (result !== null);
             },
             email: function(value, option) {
                 // Value needs to be a valid email address
-                return (value.match(/.+?@.+?\..+/));
+                var result = value.match(/^.+?@.+?\..+$/g);
+                return (result !== null);
             },
             hexColor: function(value, option) {
                 // Value needs to be a hexadecimal color, #xxx or #xxxxxx
-                if(value.match(/^#([a-f\d]{3}){1,2}$/gi))
-                    return true;
-                return false;
+                var result = value.match(/^#([a-f\d]{3}){1,2}$/gi);
+                return (result !== null);
             },
             length: function(value, option) {
                 // Value needs to have a fixed length
@@ -310,7 +311,8 @@ function ZeeValinator() {
                 // Value needs to be a valid name
                 // Remove accents, before validating the alphabetical characters
                 var nameNoAccents = self.characters.removeAccents(value);
-                return (nameNoAccents.match(/^[a-z0-9 \/,.-]+$/i));
+                var result = nameNoAccents.match(/^[a-z0-9 \/,.-]+$/gi);
+                return (result !== null);
             },
             numeric: function(value, option) {
                 // Value needs to be a number
@@ -319,7 +321,8 @@ function ZeeValinator() {
             },
             phone: function(value, option) {
                 // Value needs to be a valid phone number
-                return (value.match(/^[\d\(\) \+-]+$/));
+                var result = value.match(/^[\d\(\) \+-]+$/g);
+                return (result !== null);
             },
             required: function(value, option) {
                 // Value can't be empty
