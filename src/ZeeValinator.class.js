@@ -101,7 +101,7 @@ function ZeeValinator() {
      */
     self.ensureJquery = function(element) {
         if($.type(element) == 'string')
-            element = $('[name="' + rule.element + '"]');
+            element = $('[name="' + element + '"]');
 
         return element;
     };
@@ -195,51 +195,58 @@ function ZeeValinator() {
         for(var i=-1;  ++i<rules.length;) {
             var rule = rules[i];
 
-            // Make sure that the element is a jQuery element
-            var $element = self.ensureJquery(rule.element);
+            // The same rules can apply to multiple elements, so make sure the element(s) are an array
+            if($.type(rule.element) != 'array')
+                rule.element = [rule.element];
 
-            // Clear any current error message
-            self.removeError($element);
+            // Loop over the elements and check for errors
+            for(var j=-1;  ++j<rule.element.length;) {
+                // Make sure that the element is a jQuery element
+                var $element = self.ensureJquery(rule.element[j]);
 
-            // Get the (trimmed) value, and update it inside the input field
-            var value = $.trim($element.val());
-            $element.val(value);
+                // Clear any current error message
+                self.removeError($element);
 
-            // Only validate if the value is not nullable,
-            // or if the value is nullable, and the value is not empty
-            if( ! rule.rules.nullable  ||  (rule.rules.nullable  &&  value != '')) {
-                // Loop over the validation rules
-                for(var ruleName in rule.rules) {
-                    // Don't validate the 'nullable' rule
-                    if(ruleName != 'nullable') {
-                        var message = rule.rules[ruleName];
-                        var option = null;
+                // Get the (trimmed) value, and update it inside the input field
+                var value = $.trim($element.val());
+                $element.val(value);
 
-                        // If the message is a function, it means it's conditional
-                        // First execute the function, to see if validation is needed
-                        if($.type(message) == 'function')
-                            message = message();
+                // Only validate if the value is not nullable,
+                // or if the value is nullable, and the value is not empty
+                if( ! rule.rules.nullable  ||  (rule.rules.nullable  &&  value != '')) {
+                    // Loop over the validation rules
+                    for(var ruleName in rule.rules) {
+                        // Don't validate the 'nullable' rule
+                        if(ruleName != 'nullable') {
+                            var message = rule.rules[ruleName];
+                            var option = null;
 
-                        // Only validate, if there is a valid message (which includes a possible option)
-                        if($.type(message) == 'string') {
-                            // Split the message to option + message by pipe character
-                            // If it has a pipe character, the part before it is the option
-                            var messageParts = message.split('|', 2);
-                            if(messageParts.length == 2) {
-                                option = messageParts[0];
-                                message = messageParts[1];
-                            }
+                            // If the message is a function, it means it's conditional
+                            // First execute the function, to see if validation is needed
+                            if($.type(message) == 'function')
+                                message = message();
 
-                            // Check the value for errors (if the check exists)
-                            if(self.checks[ruleName]  &&  ! self.checks[ruleName](value, option)) {
-                                // Set an error on the element, and keep a reference
-                                self.setError($element, message);
-                                errorElements.push({
-                                    $element: $element,
-                                    message: message
-                                });
-                                // In case of error, don't do another validation on the same element
-                                break;
+                            // Only validate, if there is a valid message (which includes a possible option)
+                            if($.type(message) == 'string') {
+                                // Split the message to option + message by pipe character
+                                // If it has a pipe character, the part before it is the option
+                                var messageParts = message.split('|', 2);
+                                if(messageParts.length == 2) {
+                                    option = messageParts[0];
+                                    message = messageParts[1];
+                                }
+
+                                // Check the value for errors (if the check exists)
+                                if(self.checks[ruleName]  &&  ! self.checks[ruleName](value, option)) {
+                                    // Set an error on the element, and keep a reference
+                                    self.setError($element, message);
+                                    errorElements.push({
+                                        $element: $element,
+                                        message: message
+                                    });
+                                    // In case of error, don't do another validation on the same element
+                                    break;
+                                }
                             }
                         }
                     }
@@ -259,11 +266,18 @@ function ZeeValinator() {
         self.newCheck({
             alphanumeric: function(value, option) {
                 // Value needs to be alphanumeric
-                return (value.match(/^[a-z\d]+$/i));
+                var result = value.match(/^[a-z\d]+$/gi);
+                return (result !== null);
             },
             email: function(value, option) {
                 // Value needs to be a valid email address
-                return (value.match(/.+?@.+?\..+/));
+                var result = value.match(/^.+?@.+?\..+$/g);
+                return (result !== null);
+            },
+            hexColor: function(value, option) {
+                // Value needs to be a hexadecimal color, #xxx or #xxxxxx
+                var result = value.match(/^#([a-f\d]{3}){1,2}$/gi);
+                return (result !== null);
             },
             length: function(value, option) {
                 // Value needs to have a fixed length
@@ -297,7 +311,8 @@ function ZeeValinator() {
                 // Value needs to be a valid name
                 // Remove accents, before validating the alphabetical characters
                 var nameNoAccents = self.characters.removeAccents(value);
-                return (nameNoAccents.match(/^[a-z0-9 \/,.-]+$/i));
+                var result = nameNoAccents.match(/^[a-z0-9 \/,.-]+$/gi);
+                return (result !== null);
             },
             numeric: function(value, option) {
                 // Value needs to be a number
@@ -306,7 +321,8 @@ function ZeeValinator() {
             },
             phone: function(value, option) {
                 // Value needs to be a valid phone number
-                return (value.match(/^[\d\(\) \+-]+$/));
+                var result = value.match(/^[\d\(\) \+-]+$/g);
+                return (result !== null);
             },
             required: function(value, option) {
                 // Value can't be empty
