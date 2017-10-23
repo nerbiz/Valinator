@@ -1,5 +1,13 @@
 # Release notes
 
+## 0.12.0
+
+* Added an easy way of setting the same validation rules for multiple input elements.
+* Added the 'hexColor' validation check.
+* Regular expressions in checks now all use the 'global' flag.
+* Regular expressions in checks now return a boolean (previously they returned whatever string.match() returned).
+* Fixed: ensureJquery() wasn't working.
+
 ## 0.11.0
 
 * Only changed the version from 0.11 to 0.11.0 (semver). Bower wasn't seeing the last update, hopefully now it will.
