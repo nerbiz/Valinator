@@ -204,48 +204,51 @@ function ZeeValinator() {
                 // Make sure that the element is a jQuery element
                 var $element = self.ensureJquery(rule.element[j]);
 
-                // Clear any current error message
-                self.removeError($element);
+                // Continue if the element exists
+                if($element.length > 0) {
+                    // Clear any current error message
+                    self.removeError($element);
 
-                // Get the (trimmed) value, and update it inside the input field
-                var value = $.trim($element.val());
-                $element.val(value);
+                    // Get the (trimmed) value, and update it inside the input field
+                    var value = $.trim($element.val());
+                    $element.val(value);
 
-                // Only validate if the value is not nullable,
-                // or if the value is nullable, and the value is not empty
-                if( ! rule.rules.nullable  ||  (rule.rules.nullable  &&  value != '')) {
-                    // Loop over the validation rules
-                    for(var ruleName in rule.rules) {
-                        // Don't validate the 'nullable' rule
-                        if(ruleName != 'nullable') {
-                            var message = rule.rules[ruleName];
-                            var option = null;
+                    // Only validate if the value is not nullable,
+                    // or if the value is nullable, and the value is not empty
+                    if( ! rule.rules.nullable  ||  (rule.rules.nullable  &&  value != '')) {
+                        // Loop over the validation rules
+                        for(var ruleName in rule.rules) {
+                            // Don't validate the 'nullable' rule
+                            if(ruleName != 'nullable') {
+                                var message = rule.rules[ruleName];
+                                var option = null;
 
-                            // If the message is a function, it means it's conditional
-                            // First execute the function, to see if validation is needed
-                            if($.type(message) == 'function')
-                                message = message();
+                                // If the message is a function, it means it's conditional
+                                // First execute the function, to see if validation is needed
+                                if($.type(message) == 'function')
+                                    message = message();
 
-                            // Only validate, if there is a valid message (which includes a possible option)
-                            if($.type(message) == 'string') {
-                                // Split the message to option + message by pipe character
-                                // If it has a pipe character, the part before it is the option
-                                var messageParts = message.split('|', 2);
-                                if(messageParts.length == 2) {
-                                    option = messageParts[0];
-                                    message = messageParts[1];
-                                }
+                                // Only validate, if there is a valid message (which includes a possible option)
+                                if($.type(message) == 'string') {
+                                    // Split the message to option + message by pipe character
+                                    // If it has a pipe character, the part before it is the option
+                                    var messageParts = message.split('|', 2);
+                                    if(messageParts.length == 2) {
+                                        option = messageParts[0];
+                                        message = messageParts[1];
+                                    }
 
-                                // Check the value for errors (if the check exists)
-                                if(self.checks[ruleName]  &&  ! self.checks[ruleName](value, option)) {
-                                    // Set an error on the element, and keep a reference
-                                    self.setError($element, message);
-                                    errorElements.push({
-                                        $element: $element,
-                                        message: message
-                                    });
-                                    // In case of error, don't do another validation on the same element
-                                    break;
+                                    // Check the value for errors (if the check exists)
+                                    if(self.checks[ruleName]  &&  ! self.checks[ruleName](value, option)) {
+                                        // Set an error on the element, and keep a reference
+                                        self.setError($element, message);
+                                        errorElements.push({
+                                            $element: $element,
+                                            message: message
+                                        });
+                                        // In case of error, don't do another validation on the same element
+                                        break;
+                                    }
                                 }
                             }
                         }
