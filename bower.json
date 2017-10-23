@@ -1,6 +1,6 @@
 {
   "name": "zee-valinator",
-  "version": "0.12.0",
+  "version": "0.12.1",
   "description": "JavaScript class for validating input elements",
   "authors": [
     "Sybren Dijkstra"
