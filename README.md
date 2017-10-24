@@ -4,10 +4,14 @@ JavaScript class for validating input elements.
 I need your clothes, your boots, your motorcycle and your HTML forms 😎
 
 ## Installation
-Use Bower to install ZeeValinator.
+Use Yarn/NPM to install ZeeValinator.
 
 ```
-bower install zee-valinator --save
+// Using Yarn
+yarn add zee-valinator
+
+// Or with NPM
+npm install zee-valinator --save
 ```
 
 ## Usage
