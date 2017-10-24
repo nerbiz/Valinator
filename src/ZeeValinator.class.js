@@ -207,7 +207,7 @@ function ZeeValinator() {
                 // Continue if the element exists
                 if($element.length > 0) {
                     // Only validate enabled elements
-                    if($element.prop('disabled') == false) {
+                    if($element.prop('disabled') === false) {
                         // Clear any current error message
                         self.removeError($element);
 
