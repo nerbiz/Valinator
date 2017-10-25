@@ -1,5 +1,11 @@
 # Release notes
 
+## 0.13.0
+
+* Switched to Yarn/NPM, dropping Bower support.
+* Updated the readme according to this change.
+* Moved the big comments out of the code examples in the readme.
+
 ## 0.12.1
 
 * Non-existing input elements are now skipped.
