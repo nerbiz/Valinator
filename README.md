@@ -18,8 +18,8 @@ npm install zee-valinator --save
 #### Include jQuery before including the ZeeValinator file:
 
 ```html
-<script src="bower_components/jquery/dist/jquery.min.js"></script>
-<script src="bower_components/zee-valinator/dist/zee-valinator.min.js"></script>
+<script src="node_modules/jquery/dist/jquery.min.js"></script>
+<script src="node_modules/zee-valinator/dist/zee-valinator.min.js"></script>
 ```
 
 #### Create a new ZeeValinator object:
