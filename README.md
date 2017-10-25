@@ -6,7 +6,7 @@ I need your clothes, your boots, your motorcycle and your HTML forms 😎
 ## Installation
 Use Yarn/NPM to install ZeeValinator.
 
-```
+```cli
 // Using Yarn
 yarn add zee-valinator
 
@@ -40,7 +40,8 @@ validationRules.push({
     element: $('select[name="connor_family_member"]'),
     rules: {
         // This is the 'required' rule, and the message in case the input value is empty
-        required: 'Please select either John or Sarah'
+        // As you can see, HTML is supported
+        required: 'Please select either <em>John</em> or <em>Sarah</em>'
     }
 });
 ```
@@ -188,6 +189,43 @@ zeeValinator.newCheck({
         return (value == 'motorcycle');
     }
 });
+```
+
+The error handling can also be overwritten, with the setCustomErrorHandlers() method. The first argument is the 'set error' callback, the second argument is the 'remove error' callback. Either one of these can be null, if you wish to keep te default for it.
+
+```js
+zeeValinator.setCustomErrorHandlers(
+    // The 'set error' callback gets the ZeeValinator object,
+    // the element that contains an error (jQuery object) and the error message
+    function(zee, $element, message) {
+        // ...
+    },
+    // The 'remove error' callback gets the same, minus the error message
+    function(zee, $element) {
+        // ...
+    }
+);
+```
+
+To make writing custom error handlers a little easier, the properties below are accessible inside the callbacks. You could do something completely different of course, but here they are for reference:
+
+```js
+// Input elements with errors get this CSS class (default: 'zee-valinator-error')
+zee.inputErrorClass
+
+// The HTML tag of the error element (default: 'span')
+zee.errorMessageTag
+
+// The CSS class of the error element (default: 'zee-valinator-error-message')
+zee.errorMessageClass
+
+// The error message tag and CSS class concatenated (default: 'span.zee-valinator-error-message')
+zee.errorMessageSelector
+
+// The error message jQuery element, using the above
+// When using this, please use zee.$errorMessageElement.clone(),
+// Otherwise the same jQuery object will be reused
+zee.$errorMessageElement
 ```
 
 ## Styling

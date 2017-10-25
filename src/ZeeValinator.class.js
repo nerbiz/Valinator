@@ -32,10 +32,25 @@ function ZeeValinator() {
     self.errorMessageSelector = self.errorMessageTag + '.' + self.errorMessageClass;
 
     /**
+     * The error message element as a jQuery object, for convenience
+     * Clone it before working with it, otherwise the same element will be reused
+     * @type jQuery
+     */
+    self.$errorMessageElement = $('<' + self.errorMessageTag + '/>').addClass(self.errorMessageClass);
+
+    /**
      * All the validation checks, in name:function pairs
      * @type Object
      */
     self.checks = {};
+
+    /**
+     * Custom error handler, that will overwrite the defaults
+     * One for setting errors, the other for removing them
+     * @type Function
+     */
+    self.customSetError = null;
+    self.customRemoveError = null;
 
 
 
@@ -56,8 +71,9 @@ function ZeeValinator() {
     self.setErrorMessageTag = function(htmlTag) {
         self.errorMessageTag = htmlTag;
 
-        // Also update the error message selector accordingly
+        // Also update the error message selector and element accordingly
         self.errorMessageSelector = self.errorMessageTag + '.' + self.errorMessageClass;
+        self.$errorMessageElement = $('<' + self.errorMessageTag + '/>').addClass(self.errorMessageClass);
     };
 
 
@@ -69,8 +85,21 @@ function ZeeValinator() {
     self.setErrorMessageClass = function(cssClass) {
         self.errorMessageClass = cssClass;
 
-        // Also update the error message selector accordingly
+        // Also update the error message selector and element accordingly
         self.errorMessageSelector = self.errorMessageTag + '.' + self.errorMessageClass;
+        self.$errorMessageElement = $('<' + self.errorMessageTag + '/>').addClass(self.errorMessageClass);
+    };
+
+
+
+    /**
+     * Set a custom error handler, that will be used instead of setError()
+     * @param Function  addCallback
+     * @param Function  removeCallback
+     */
+    self.setCustomErrorHandlers = function(addCallback, removeCallback) {
+        self.customSetError = addCallback;
+        self.customRemoveError = removeCallback;
     };
 
 
@@ -113,11 +142,18 @@ function ZeeValinator() {
      * @param jQuery  $element
      */
     self.removeError = function($element) {
-        // Remove the error class from the input element
-        $element.removeClass(self.inputErrorClass)
-            // Then remove the error message element
-            .next(self.errorMessageSelector)
-            .remove();
+        // Call the custom one, if it exists
+        if(self.customRemoveError)
+            self.customRemoveError(self, $element);
+
+        // Otherwise do the default
+        else {
+            // Remove the error class from the input element
+            $element.removeClass(self.inputErrorClass)
+                // Then remove the error message element
+                .next(self.errorMessageSelector)
+                .remove();
+        }
     };
 
 
@@ -128,26 +164,30 @@ function ZeeValinator() {
      * @param String  message
      */
     self.setError = function($element, message) {
-        // Add an error message element, if it's not there yet
-        if($element.next(self.errorMessageSelector).length < 1) {
-            $('<' + self.errorMessageTag + '/>')
-                .addClass(self.errorMessageClass)
-                .insertAfter($element);
+        // Call the custom one, if it exists
+        if(self.customSetError)
+            self.customSetError(self, $element, message);
+
+        // Otherwise do the default
+        else {
+            // Add an error message element, if it's not there yet
+            if($element.next(self.errorMessageSelector).length < 1)
+                self.$errorMessageElement.clone().insertAfter($element);
+
+            // Add the error class to the input element
+            $element.addClass(self.inputErrorClass)
+                // Then set the error message in the error message element
+                .next(self.errorMessageSelector)
+                .html(message);
+
+            // When the value of the element changes, remove the error
+            $element
+                // Only 1 binding, so remove it first (event namespace is to prevent turning off (all) other event handlers)
+                .off('change.validation keyup.validation paste.validation')
+                .on('change.validation keyup.validation paste.validation', function(event) {
+                    self.removeError($element);
+                });
         }
-
-        // Add the error class to the input element
-        $element.addClass(self.inputErrorClass)
-            // Then set the error message in the error message element
-            .next(self.errorMessageSelector)
-            .text(message);
-
-        // When the value of the element changes, remove the error
-        $element
-            // Only 1 binding, so remove it first (event namespace is to prevent turning off (all) other event handlers)
-            .off('change.validation keyup.validation paste.validation')
-            .on('change.validation keyup.validation paste.validation', function(event) {
-                self.removeError($element);
-            });
     };
 
 
