@@ -143,7 +143,7 @@ function ZeeValinator() {
      */
     self.removeError = function($element) {
         // Call the custom one, if it exists
-        if(self.customRemoveError !== null)
+        if(self.customRemoveError)
             self.customRemoveError(self, $element);
 
         // Otherwise do the default
@@ -165,7 +165,7 @@ function ZeeValinator() {
      */
     self.setError = function($element, message) {
         // Call the custom one, if it exists
-        if(self.customSetError !== null)
+        if(self.customSetError)
             self.customSetError(self, $element, message);
 
         // Otherwise do the default
