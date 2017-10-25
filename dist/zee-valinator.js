@@ -32,6 +32,13 @@ function ZeeValinator() {
     self.errorMessageSelector = self.errorMessageTag + '.' + self.errorMessageClass;
 
     /**
+     * The error message element as a jQuery object, for convenience
+     * Clone it before working with it, otherwise the same element will be reused
+     * @type jQuery
+     */
+    self.$errorMessageElement = $('<' + self.errorMessageTag + '/>').addClass(self.errorMessageClass);
+
+    /**
      * All the validation checks, in name:function pairs
      * @type Object
      */
@@ -64,8 +71,9 @@ function ZeeValinator() {
     self.setErrorMessageTag = function(htmlTag) {
         self.errorMessageTag = htmlTag;
 
-        // Also update the error message selector accordingly
+        // Also update the error message selector and element accordingly
         self.errorMessageSelector = self.errorMessageTag + '.' + self.errorMessageClass;
+        self.$errorMessageElement = $('<' + self.errorMessageTag + '/>').addClass(self.errorMessageClass);
     };
 
 
@@ -77,8 +85,9 @@ function ZeeValinator() {
     self.setErrorMessageClass = function(cssClass) {
         self.errorMessageClass = cssClass;
 
-        // Also update the error message selector accordingly
+        // Also update the error message selector and element accordingly
         self.errorMessageSelector = self.errorMessageTag + '.' + self.errorMessageClass;
+        self.$errorMessageElement = $('<' + self.errorMessageTag + '/>').addClass(self.errorMessageClass);
     };
 
 
@@ -162,11 +171,8 @@ function ZeeValinator() {
         // Otherwise do the default
         else {
             // Add an error message element, if it's not there yet
-            if($element.next(self.errorMessageSelector).length < 1) {
-                $('<' + self.errorMessageTag + '/>')
-                    .addClass(self.errorMessageClass)
-                    .insertAfter($element);
-            }
+            if($element.next(self.errorMessageSelector).length < 1)
+                self.$errorMessageElement.clone().insertAfter($element);
 
             // Add the error class to the input element
             $element.addClass(self.inputErrorClass)
