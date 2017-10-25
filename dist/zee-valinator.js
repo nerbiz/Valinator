@@ -172,7 +172,7 @@ function ZeeValinator() {
             $element.addClass(self.inputErrorClass)
                 // Then set the error message in the error message element
                 .next(self.errorMessageSelector)
-                .text(message);
+                .html(message);
 
             // When the value of the element changes, remove the error
             $element
