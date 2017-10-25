@@ -15,63 +15,56 @@ npm install zee-valinator --save
 ```
 
 ## Usage
-#### Include jQuery before including the ZeeValinator file:
+
+#### Include jQuery before including the ZeeValinator file
 
 ```html
-<script src="node_modules/jquery/dist/jquery.min.js"></script>
+<script src="path/to/jquery.min.js"></script>
 <script src="node_modules/zee-valinator/dist/zee-valinator.min.js"></script>
 ```
 
-#### Create a new ZeeValinator object:
+#### Create a new ZeeValinator object
 
 ```js
 var zeeValinator = new ZeeValinator();
 ```
 
-#### Create some validation rules as objects, with 'element' and 'rules' properties:
+#### Create some validation rules as objects, with 'element' and 'rules' properties
+
+The 'element' property can be either a string (the 'name' attribute of the element you want to validate), or a jQuery object.
 
 ```js
 var validationRules = [];
 
 validationRules.push({
-    // Providing 'connor_family_member' will also work,
-    // ZeeValinator will then select the element with that name attribute
     element: $('select[name="connor_family_member"]'),
     rules: {
         // This is the 'required' rule, and the message in case the input value is empty
         required: 'Please select either John or Sarah'
     }
 });
+```
 
+Multiple rules for the same element are possible. Some rules have an extra option, like the 'matchWith' rule below. In this example, the 'password' element needs to have the same value as the 'password_check' element.
+
+```js
 validationRules.push({
     element: 'password',
     rules: {
-        // Multiple rules for the same input element are possible
         required: 'Please fill in a password, like h4st4-l4-v1st4 or something',
-        /*
-        Here is a rule with an option,
-        which is separated from the message by a pipe charater.
-        In this example, the 'password' element needs to have the same value
-        as the 'password_check' element
-        */
         matchWith: 'password_check|Passwords do not match!'
     }
 });
+```
 
+To make a rule conditional, or more advanced in any way, use a function. In the example below, clothes (including boots) are only needed when naked. If the rule applies, return the error message string, otherwise return nothing, or just anything that isn't a string.
+
+*Please note:* ZeeValinator checks for a returned string, so ```''``` will still be treated as an error message, and it could then add the error class to the input element, and add an error message element.
+
+```js
 validationRules.push({
     element: 'clothes',
     rules: {
-        /*
-        To make a rule conditional, or more advanced in any way, use a function
-        In this example, clothes (including boots) are only needed when naked
-        If the rule applies, return the error message string, otherwise return nothing,
-        or anything that isn't a string
-        Please note:
-            ZeeValinator checks for a returned string,
-            so '' will still be treated as an error message,
-            so it could then add the error class to the input element,
-            and add an error message element
-        */
         required: function() {
             var hasClothes = $('input[name="has_clothes"]').prop('checked');
 
@@ -80,14 +73,12 @@ validationRules.push({
         }
     }
 });
+```
 
+It is also possible to do the same validation on multiple elements, using an element array. In this case, a valid color needs to be given in 3 input elements. Strings and jQuery objects can be mixed in the array.
+
+```js
 validationRules.push({
-    /*
-    It is also possible to do the same validation on multiple elements,
-    using an element array.
-    In this case, a valid color needs to be given in 3 input elements.
-    Strings and jQuery objects can be mixed in the array.
-    */
     element: ['clothes', $('input[name="boots"]'), 'motorcycle'],
     rules: {
         hexColor: 'Please set a valid color'
@@ -182,8 +173,11 @@ zeeValinator.newCheck('required', function(value, option) {
     // Apart from not being empty (required), the value has to be 'motorcycle'
     return (value == 'motorcycle');
 });
+```
 
-// The above can also be done with 1 call, using an object as the only argument
+The above can also be done with 1 call, using an object as the only argument
+
+```js
 zeeValinator.newCheck({
     isJohnConnor: function(value, option) {
         // See if the person filling in your form is John Connor
