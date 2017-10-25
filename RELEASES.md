@@ -1,5 +1,10 @@
 # Release notes
 
+## 0.14.0
+
+* Added support for HTML in error messages.
+* Added support for custom error handlers.
+
 ## 0.13.1
 
 * Forgot to update the version in package.json.
