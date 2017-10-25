@@ -1,5 +1,9 @@
 # Release notes
 
+## 0.13.1
+
+* Forgot to update the version in package.json.
+
 ## 0.13.0
 
 * Switched to Yarn/NPM, dropping Bower support.
