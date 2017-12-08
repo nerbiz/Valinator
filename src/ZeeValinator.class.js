@@ -2,10 +2,11 @@ function ZeeValinator() {
     var self = this;
 
     /**
-     * Class dependency
-     * @type ZeeValinatorCharacters
+     * Dependencies
+     * @type Object
      */
     self.characters = new ZeeValinatorCharacters();
+    self.defaultChecks = new ZeeValinatorDefaultChecks();
 
     /**
      * The CSS class to add to an input element that contains an error
@@ -183,8 +184,8 @@ function ZeeValinator() {
             // When the value of the element changes, remove the error
             $element
                 // Only 1 binding, so remove it first (event namespace is to prevent turning off (all) other event handlers)
-                .off('change.validation keyup.validation paste.validation')
-                .on('change.validation keyup.validation paste.validation', function(event) {
+                .off('change.zeeValinator keyup.zeeValinator paste.zeeValinator')
+                .on('change.zeeValinator keyup.zeeValinator paste.zeeValinator', function(event) {
                     self.removeError($element);
                 });
         }
@@ -194,55 +195,53 @@ function ZeeValinator() {
 
     /**
      * Validate given input fields
-     * @param  Array  rules  Rules as objects (will be converted to array, if an object is given)
-     *                         element: input name or jQuery element
-     *                         rules: validation rules with error message, can have an option, with pipe character
-     *                         Example:
-     *                         {
-     *                             element: $('input[name="password"]'),
+     * @param  Array  definitions  Rule definitions as objects (will be converted to array, if an object is given)
+     *                             element: input name or jQuery element
+     *                             rules: validation rules with error message, can have an option, with pipe character
+     *                             Example:
+     *                             {
+     *                                 element: $('input[name="password"]'),
+     *                                 rules: {
+     *                                     required: 'Please fill in a password',
+     *                                     min: '8|Password needs to be least 8 characters long',
+     *                                     matchWith: 'password_check|Passwords need to match'
+     *                                 }
+     *                             }
+     *                             To make a value nullable, provide the rule nullable:true
+     *                             The other validation rules will then only be applied if the value is not empty, example:
      *                             rules: {
-     *                                 required: 'Please fill in a password',
-     *                                 min: '8|Password needs to be least 8 characters long',
-     *                                 matchWith: 'password_check|Passwords need to match'
+     *                                 nullable: true,
+     *                                 min: '5|The value needs to be at least 5 characters long'
      *                             }
-     *                         }
-     *                         To make a value nullable, provide the rule nullable:true
-     *                         The other validation rules will then only be applied if the value is not empty, example:
-     *                         rules: {
-     *                             nullable: true,
-     *                             min: '5|The value needs to be at least 5 characters long'
-     *                         }
-     *                         To make a validation conditional, provide a function instead of a message
-     *                         In this example, the field is only required if a particular select option is chosen
-     *                         rules: {
-     *                             required: function() {
-     *                                 if($('select[name="hobby"]').val() == 'other')
-     *                                     return 'Please tell us what your hobby is';
+     *                             To make a validation conditional, provide a function instead of a message
+     *                             In this example, the field is only required if a particular select option is chosen
+     *                             rules: {
+     *                                 required: function() {
+     *                                     if($('select[name="hobby"]').val() == 'other')
+     *                                         return 'Please tell us what your hobby is';
+     *                                 }
      *                             }
-     *                         }
      * @return  Array  Collection of error elements as objects: {$element, message}
      */
-    self.validate = function(rules) {
-        // Make sure the rules are an array
-        if($.type(rules) != 'array')
-            rules = [rules];
+    self.validate = function(definitions) {
+        // Make sure the definitions are an array
+        if($.type(definitions) != 'array')
+            definitions = [definitions];
 
         // Keep track of the elements that have errors
         // Will contain objects: {$element, message}
         var errorElements = [];
 
-        // Loop over the validation rules
-        for(var i=-1;  ++i<rules.length;) {
-            var rule = rules[i];
-
-            // The same rules can apply to multiple elements, so make sure the element(s) are an array
-            if($.type(rule.element) != 'array')
-                rule.element = [rule.element];
+        // Loop over the validation definitions
+        $.each(definitions, function(definitionIndex, definition) {
+            // The same definitions can apply to multiple elements, so make sure the element(s) are an array
+            if($.type(definition.element) != 'array')
+                definition.element = [definition.element];
 
             // Loop over the elements and check for errors
-            for(var j=-1;  ++j<rule.element.length;) {
+            $.each(definition.element, function(elementIndex, element) {
                 // Make sure that the element is a jQuery element
-                var $element = self.ensureJquery(rule.element[j]);
+                var $element = self.ensureJquery(element);
 
                 // Continue if the element exists
                 if($element.length > 0) {
@@ -255,20 +254,24 @@ function ZeeValinator() {
                         var value = $.trim($element.val());
                         $element.val(value);
 
+                        // See if the element is nullable
+                        var nullable = definition.rules.nullable;
+                        if($.type(nullable) == 'function')
+                            nullable = nullable($element);
+
                         // Only validate if the value is not nullable,
                         // or if the value is nullable, and the value is not empty
-                        if( ! rule.rules.nullable  ||  (rule.rules.nullable  &&  value != '')) {
+                        if( ! nullable  ||  (nullable  &&  value != '')) {
                             // Loop over the validation rules
-                            for(var ruleName in rule.rules) {
+                            $.each(definition.rules, function(ruleName, message) {
                                 // Don't validate the 'nullable' rule
                                 if(ruleName != 'nullable') {
-                                    var message = rule.rules[ruleName];
                                     var option = null;
 
                                     // If the message is a function, it means it's conditional
                                     // First execute the function, to see if validation is needed
                                     if($.type(message) == 'function')
-                                        message = message();
+                                        message = message($element);
 
                                     // Only validate, if there is a valid message (which includes a possible option)
                                     if($.type(message) == 'string') {
@@ -288,17 +291,18 @@ function ZeeValinator() {
                                                 $element: $element,
                                                 message: message
                                             });
+
                                             // In case of error, don't do another validation on the same element
-                                            break;
+                                            return false;
                                         }
                                     }
                                 }
-                            }
+                            });
                         }
                     }
                 }
-            }
-        }
+            });
+        });
 
         return errorElements;
     };
@@ -309,71 +313,6 @@ function ZeeValinator() {
      * Set some validation checks, to be used by self.validate
      */
     (self.setChecks = function() {
-        self.newCheck({
-            alphanumeric: function(value, option) {
-                // Value needs to be alphanumeric
-                var result = value.match(/^[a-z\d]+$/gi);
-                return (result !== null);
-            },
-            email: function(value, option) {
-                // Value needs to be a valid email address
-                var result = value.match(/^.+?@.+?\..+$/g);
-                return (result !== null);
-            },
-            hexColor: function(value, option) {
-                // Value needs to be a hexadecimal color, #xxx or #xxxxxx
-                var result = value.match(/^#([a-f\d]{3}){1,2}$/gi);
-                return (result !== null);
-            },
-            length: function(value, option) {
-                // Value needs to have a fixed length
-                return (value.length == parseInt(option, 10));
-            },
-            match: function(value, option) {
-                // Value needs to match the option
-                return (value == option);
-            },
-            matchWith: function(value, option) {
-                // Value needs to match the value of another element
-                return (value == $('[name="' + option + '"]').val());
-            },
-            maxLength: function(value, option) {
-                // Value needs to have a maximum length
-                return (value.length <= parseInt(option, 10));
-            },
-            maxNumber: function(value, option) {
-                // Value needs to be a number, and lower than or equal to the option
-                return ( ! isNaN(value - parseFloat(value))  &&  value <= option);
-            },
-            minLength: function(value, option) {
-                // Value needs to have a minimum length
-                return (value.length >= parseInt(option, 10));
-            },
-            minNumber: function(value, option) {
-                // Value needs to be a number, and higher than or equal to the option
-                return ( ! isNaN(value - parseFloat(value))  &&  value >= option);
-            },
-            personName: function(value, option) {
-                // Value needs to be a valid name
-                // Remove accents, before validating the alphabetical characters
-                var nameNoAccents = self.characters.removeAccents(value);
-                var result = nameNoAccents.match(/^[a-z0-9 \/,.-]+$/gi);
-                return (result !== null);
-            },
-            numeric: function(value, option) {
-                // Value needs to be a number
-                // From: https://github.com/angular/angular/blob/4.3.x/packages/common/src/pipes/number_pipe.ts#L172
-                return ( ! isNaN(value - parseFloat(value)));
-            },
-            phone: function(value, option) {
-                // Value needs to be a valid phone number
-                var result = value.match(/^[\d\(\) \+-]+$/g);
-                return (result !== null);
-            },
-            required: function(value, option) {
-                // Value can't be empty
-                return (value != '');
-            }
-        });
+        self.newCheck(self.defaultChecks.get());
     })();
 }
