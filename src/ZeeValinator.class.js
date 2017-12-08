@@ -233,17 +233,15 @@ function ZeeValinator() {
         var errorElements = [];
 
         // Loop over the validation definitions
-        for(var i=-1;  ++i<definitions.length;) {
-            var definition = definitions[i];
-
+        $.each(definitions, function(definitionIndex, definition) {
             // The same definitions can apply to multiple elements, so make sure the element(s) are an array
             if($.type(definition.element) != 'array')
                 definition.element = [definition.element];
 
             // Loop over the elements and check for errors
-            for(var j=-1;  ++j<definition.element.length;) {
+            $.each(definition.element, function(elementIndex, element) {
                 // Make sure that the element is a jQuery element
-                var $element = self.ensureJquery(definition.element[j]);
+                var $element = self.ensureJquery(element);
 
                 // Continue if the element exists
                 if($element.length > 0) {
@@ -265,10 +263,9 @@ function ZeeValinator() {
                         // or if the value is nullable, and the value is not empty
                         if( ! nullable  ||  (nullable  &&  value != '')) {
                             // Loop over the validation rules
-                            for(var ruleName in definition.rules) {
+                            $.each(definition.rules, function(ruleName, message) {
                                 // Don't validate the 'nullable' rule
                                 if(ruleName != 'nullable') {
-                                    var message = definition.rules[ruleName];
                                     var option = null;
 
                                     // If the message is a function, it means it's conditional
@@ -294,17 +291,18 @@ function ZeeValinator() {
                                                 $element: $element,
                                                 message: message
                                             });
+
                                             // In case of error, don't do another validation on the same element
-                                            break;
+                                            return false;
                                         }
                                     }
                                 }
-                            }
+                            });
                         }
                     }
                 }
-            }
-        }
+            });
+        });
 
         return errorElements;
     };
