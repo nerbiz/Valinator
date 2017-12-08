@@ -195,55 +195,55 @@ function ZeeValinator() {
 
     /**
      * Validate given input fields
-     * @param  Array  rules  Rules as objects (will be converted to array, if an object is given)
-     *                         element: input name or jQuery element
-     *                         rules: validation rules with error message, can have an option, with pipe character
-     *                         Example:
-     *                         {
-     *                             element: $('input[name="password"]'),
+     * @param  Array  definitions  Rule definitions as objects (will be converted to array, if an object is given)
+     *                             element: input name or jQuery element
+     *                             rules: validation rules with error message, can have an option, with pipe character
+     *                             Example:
+     *                             {
+     *                                 element: $('input[name="password"]'),
+     *                                 rules: {
+     *                                     required: 'Please fill in a password',
+     *                                     min: '8|Password needs to be least 8 characters long',
+     *                                     matchWith: 'password_check|Passwords need to match'
+     *                                 }
+     *                             }
+     *                             To make a value nullable, provide the rule nullable:true
+     *                             The other validation rules will then only be applied if the value is not empty, example:
      *                             rules: {
-     *                                 required: 'Please fill in a password',
-     *                                 min: '8|Password needs to be least 8 characters long',
-     *                                 matchWith: 'password_check|Passwords need to match'
+     *                                 nullable: true,
+     *                                 min: '5|The value needs to be at least 5 characters long'
      *                             }
-     *                         }
-     *                         To make a value nullable, provide the rule nullable:true
-     *                         The other validation rules will then only be applied if the value is not empty, example:
-     *                         rules: {
-     *                             nullable: true,
-     *                             min: '5|The value needs to be at least 5 characters long'
-     *                         }
-     *                         To make a validation conditional, provide a function instead of a message
-     *                         In this example, the field is only required if a particular select option is chosen
-     *                         rules: {
-     *                             required: function() {
-     *                                 if($('select[name="hobby"]').val() == 'other')
-     *                                     return 'Please tell us what your hobby is';
+     *                             To make a validation conditional, provide a function instead of a message
+     *                             In this example, the field is only required if a particular select option is chosen
+     *                             rules: {
+     *                                 required: function() {
+     *                                     if($('select[name="hobby"]').val() == 'other')
+     *                                         return 'Please tell us what your hobby is';
+     *                                 }
      *                             }
-     *                         }
      * @return  Array  Collection of error elements as objects: {$element, message}
      */
-    self.validate = function(rules) {
-        // Make sure the rules are an array
-        if($.type(rules) != 'array')
-            rules = [rules];
+    self.validate = function(definitions) {
+        // Make sure the definitions are an array
+        if($.type(definitions) != 'array')
+            definitions = [definitions];
 
         // Keep track of the elements that have errors
         // Will contain objects: {$element, message}
         var errorElements = [];
 
-        // Loop over the validation rules
-        for(var i=-1;  ++i<rules.length;) {
-            var rule = rules[i];
+        // Loop over the validation definitions
+        for(var i=-1;  ++i<definitions.length;) {
+            var definition = definitions[i];
 
-            // The same rules can apply to multiple elements, so make sure the element(s) are an array
-            if($.type(rule.element) != 'array')
-                rule.element = [rule.element];
+            // The same definitions can apply to multiple elements, so make sure the element(s) are an array
+            if($.type(definition.element) != 'array')
+                definition.element = [definition.element];
 
             // Loop over the elements and check for errors
-            for(var j=-1;  ++j<rule.element.length;) {
+            for(var j=-1;  ++j<definition.element.length;) {
                 // Make sure that the element is a jQuery element
-                var $element = self.ensureJquery(rule.element[j]);
+                var $element = self.ensureJquery(definition.element[j]);
 
                 // Continue if the element exists
                 if($element.length > 0) {
@@ -257,7 +257,7 @@ function ZeeValinator() {
                         $element.val(value);
 
                         // See if the element is nullable
-                        var nullable = rule.rules.nullable;
+                        var nullable = definition.rules.nullable;
                         if($.type(nullable) == 'function')
                             nullable = nullable($element);
 
@@ -265,10 +265,10 @@ function ZeeValinator() {
                         // or if the value is nullable, and the value is not empty
                         if( ! nullable  ||  (nullable  &&  value != '')) {
                             // Loop over the validation rules
-                            for(var ruleName in rule.rules) {
+                            for(var ruleName in definition.rules) {
                                 // Don't validate the 'nullable' rule
                                 if(ruleName != 'nullable') {
-                                    var message = rule.rules[ruleName];
+                                    var message = definition.rules[ruleName];
                                     var option = null;
 
                                     // If the message is a function, it means it's conditional
