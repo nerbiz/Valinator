@@ -1,5 +1,12 @@
 # Release notes
 
+## 0.15.0
+
+* Default checks are now defined in a separate class.
+* Conditional message callbacks now get the element as an argument.
+* Changed the event namespace.
+* The 'nullable' rule now also accepts a callback, should return a boolean.
+
 ## 0.14.0
 
 * Added support for HTML in error messages.
