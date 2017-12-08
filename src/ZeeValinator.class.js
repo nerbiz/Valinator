@@ -269,7 +269,7 @@ function ZeeValinator() {
                                     // If the message is a function, it means it's conditional
                                     // First execute the function, to see if validation is needed
                                     if($.type(message) == 'function')
-                                        message = message();
+                                        message = message($element);
 
                                     // Only validate, if there is a valid message (which includes a possible option)
                                     if($.type(message) == 'string') {
