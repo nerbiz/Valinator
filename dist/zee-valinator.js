@@ -184,8 +184,8 @@ function ZeeValinator() {
             // When the value of the element changes, remove the error
             $element
                 // Only 1 binding, so remove it first (event namespace is to prevent turning off (all) other event handlers)
-                .off('change.validation keyup.validation paste.validation')
-                .on('change.validation keyup.validation paste.validation', function(event) {
+                .off('change.zeeValinator keyup.zeeValinator paste.zeeValinator')
+                .on('change.zeeValinator keyup.zeeValinator paste.zeeValinator', function(event) {
                     self.removeError($element);
                 });
         }
