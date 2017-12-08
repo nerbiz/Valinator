@@ -256,9 +256,14 @@ function ZeeValinator() {
                         var value = $.trim($element.val());
                         $element.val(value);
 
+                        // See if the element is nullable
+                        var nullable = rule.rules.nullable;
+                        if($.type(nullable) == 'function')
+                            nullable = nullable($element);
+
                         // Only validate if the value is not nullable,
                         // or if the value is nullable, and the value is not empty
-                        if( ! rule.rules.nullable  ||  (rule.rules.nullable  &&  value != '')) {
+                        if( ! nullable  ||  (nullable  &&  value != '')) {
                             // Loop over the validation rules
                             for(var ruleName in rule.rules) {
                                 // Don't validate the 'nullable' rule
