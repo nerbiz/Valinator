@@ -1,78 +1,77 @@
-function ZeeValinatorDefaultChecks() {
-    var self = this;
-
-
+export default function()
+{
+    const self = this;
 
     /**
      * Get the default checks
      * @return  Object
      */
-    self.get = function() {
+    self.get = () => {
         return {
-            alphanumeric: function(value, option) {
+            alphanumeric: (value, option) => {
                 // Value needs to be alphanumeric
                 var result = value.match(/^[a-z\d]+$/gi);
                 return (result !== null);
             },
-            email: function(value, option) {
+            email: (value, option) => {
                 // Value needs to be a valid email address
                 var result = value.match(/^.+?@.+?\..+$/g);
                 return (result !== null);
             },
-            hexColor: function(value, option) {
+            hexColor: (value, option) => {
                 // Value needs to be a hexadecimal color, #xxx or #xxxxxx
                 var result = value.match(/^#([a-f\d]{3}){1,2}$/gi);
                 return (result !== null);
             },
-            length: function(value, option) {
+            length: (value, option) => {
                 // Value needs to have a fixed length
                 return (value.length == parseInt(option, 10));
             },
-            match: function(value, option) {
+            match: (value, option) => {
                 // Value needs to match the option
                 return (value == option);
             },
-            matchWith: function(value, option) {
+            matchWith: (value, option) => {
                 // Value needs to match the value of another element
                 return (value == $('[name="' + option + '"]').val());
             },
-            maxLength: function(value, option) {
+            maxLength: (value, option) => {
                 // Value needs to have a maximum length
                 return (value.length <= parseInt(option, 10));
             },
-            maxNumber: function(value, option) {
+            maxNumber: (value, option) => {
                 // Value needs to be a number, and lower than or equal to the option
                 return ( ! isNaN(value - parseFloat(value))  &&  value <= parseFloat(option));
             },
-            minLength: function(value, option) {
+            minLength: (value, option) => {
                 // Value needs to have a minimum length
                 return (value.length >= parseInt(option, 10));
             },
-            minNumber: function(value, option) {
+            minNumber: (value, option) => {
                 // Value needs to be a number, and higher than or equal to the option
                 return ( ! isNaN(value - parseFloat(value))  &&  value >= parseFloat(option));
             },
-            personName: function(value, option) {
+            personName: (value, option) => {
                 // Value needs to be a valid name
                 // Remove accents, before validating the alphabetical characters
                 var nameNoAccents = self.characters.removeAccents(value);
                 var result = nameNoAccents.match(/^[a-z0-9 \/,.-]+$/gi);
                 return (result !== null);
             },
-            numeric: function(value, option) {
+            numeric: (value, option) => {
                 // Value needs to be a number
                 // From: https://github.com/angular/angular/blob/4.3.x/packages/common/src/pipes/number_pipe.ts#L172
                 return ( ! isNaN(value - parseFloat(value)));
             },
-            phone: function(value, option) {
+            phone: (value, option) => {
                 // Value needs to be a valid phone number
                 var result = value.match(/^[\d\(\) \+-]+$/g);
                 return (result !== null);
             },
-            required: function(value, option) {
+            required: (value, option) => {
                 // Value can't be empty
                 return (value != '');
-            }
+            },
         };
     };
 }

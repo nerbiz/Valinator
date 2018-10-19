@@ -7,13 +7,16 @@
   "author": "Sybren Dijkstra",
   "license": "Unlicense",
   "repository": "https://github.com/nerbiz/zee-valinator.git",
+  "scripts": {
+    "watch": "webpack --watch --config webpack.config.js --mode production",
+    "build": "webpack --config webpack.config.js --mode production"
+  },
   "devDependencies": {
-    "gulp": "^3.9.1",
-    "gulp-concat": "^2.6.1",
-    "gulp-plumber": "^1.1.0",
-    "gulp-uglify": "^3.0.0"
+    "clean-webpack-plugin": "^0.1.19",
+    "webpack": "^4.21.0",
+    "webpack-cli": "^3.1.2"
   },
   "dependencies": {
-    "jquery": "^3.2.1"
+    "jquery": "^3.3.1"
   }
 }

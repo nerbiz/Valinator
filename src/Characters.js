@@ -1,5 +1,6 @@
-function ZeeValinatorCharacters() {
-    var self = this;
+export default function()
+{
+    const self = this;
 
     /**
      * 'Flatten' characters, by removing diacritics
@@ -10,8 +11,8 @@ function ZeeValinatorCharacters() {
      * @param  String string
      * @return String
      */
-    self.removeAccents = function(string) {
-        var characterMap = [
+    self.removeAccents = string => {
+        const characterMap = [
             {
                 base: "A",
                 letters: /(&#65;|&#9398;|&#65313;|&#192;|&#193;|&#194;|&#7846;|&#7844;|&#7850;|&#7848;|&#195;|&#256;|&#258;|&#7856;|&#7854;|&#7860;|&#7858;|&#550;|&#480;|&#196;|&#478;|&#7842;|&#197;|&#506;|&#461;|&#512;|&#514;|&#7840;|&#7852;|&#7862;|&#7680;|&#260;|&#570;|&#11375;|[\u0041\u24B6\uFF21\u00C0\u00C1\u00C2\u1EA6\u1EA4\u1EAA\u1EA8\u00C3\u0100\u0102\u1EB0\u1EAE\u1EB4\u1EB2\u0226\u01E0\u00C4\u01DE\u1EA2\u00C5\u01FA\u01CD\u0200\u0202\u1EA0\u1EAC\u1EB6\u1E00\u0104\u023A\u2C6F])/g
@@ -375,9 +376,9 @@ function ZeeValinatorCharacters() {
         ];
 
         // Replace any characters in 'letters' with the character(s) in 'base'
-        var i;
-        for(i=-1;  ++i<characterMap.length;)
+        for (let i=-1;  ++i<characterMap.length;) {
             string = string.replace(characterMap[i].letters, characterMap[i].base);
+        }
 
         return string;
     };

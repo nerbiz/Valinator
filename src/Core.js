@@ -1,12 +1,16 @@
-function ZeeValinator() {
-    var self = this;
+import Characters from './Characters';
+import DefaultChecks from './DefaultChecks';
+
+export default function()
+{
+    const self = this;
 
     /**
      * Dependencies
      * @type Object
      */
-    self.characters = new ZeeValinatorCharacters();
-    self.defaultChecks = new ZeeValinatorDefaultChecks();
+    self.characters = new Characters();
+    self.defaultChecks = new DefaultChecks();
 
     /**
      * The CSS class to add to an input element that contains an error
@@ -53,23 +57,17 @@ function ZeeValinator() {
     self.customSetError = null;
     self.customRemoveError = null;
 
-
-
     /**
      * Set a custom CSS class for input fields that contain an error
      * @param String  cssClass
      */
-    self.setInputErrorClass = function(cssClass) {
-        self.inputErrorClass = cssClass;
-    };
-
-
+    self.setInputErrorClass = cssClass => self.inputErrorClass = cssClass;
 
     /**
      * Set a custom HTML tag to use for adding error message elements
      * @param String  htmlTag
      */
-    self.setErrorMessageTag = function(htmlTag) {
+    self.setErrorMessageTag = htmlTag => {
         self.errorMessageTag = htmlTag;
 
         // Also update the error message selector and element accordingly
@@ -77,13 +75,11 @@ function ZeeValinator() {
         self.$errorMessageElement = $('<' + self.errorMessageTag + '/>').addClass(self.errorMessageClass);
     };
 
-
-
     /**
      * Set a custom CSS class for the error message elements
      * @param String  cssClass
      */
-    self.setErrorMessageClass = function(cssClass) {
+    self.setErrorMessageClass = cssClass => {
         self.errorMessageClass = cssClass;
 
         // Also update the error message selector and element accordingly
@@ -91,19 +87,15 @@ function ZeeValinator() {
         self.$errorMessageElement = $('<' + self.errorMessageTag + '/>').addClass(self.errorMessageClass);
     };
 
-
-
     /**
      * Set a custom error handler, that will be used instead of setError()
      * @param Function  addCallback
      * @param Function  removeCallback
      */
-    self.setCustomErrorHandlers = function(addCallback, removeCallback) {
+    self.setCustomErrorHandlers = (addCallback, removeCallback) => {
         self.customSetError = addCallback;
         self.customRemoveError = removeCallback;
     };
-
-
 
     /**
      * Set a validation check (new or replace an existing one), that can be used by self.validate
@@ -111,41 +103,41 @@ function ZeeValinator() {
      * @param Function  callback  The checking function, needs to return a boolean (true = passed, false = failed)
      *                              This function gets 2 arguments: value and option (option can be null)
      */
-    self.newCheck = function(name, callback) {
+    self.newCheck = (name, callback) => {
         // An object with name:function pairs can be given,
         // which will be merged with the existing
-        if($.type(name) == 'object')
+        if($.type(name) == 'object') {
             self.checks = $.extend(true, self.checks, name);
+        }
 
         // Otherwise use name and callback to add it
-        else
+        else {
             self.checks[name] = callback;
+        }
     };
-
-
 
     /**
      * Make sure the given value is/becomes a jQuery element
      * @param  String|jQuery  element
      * @return jQuery
      */
-    self.ensureJquery = function(element) {
-        if($.type(element) == 'string')
+    self.ensureJquery = element => {
+        if($.type(element) == 'string') {
             element = $('[name="' + element + '"]');
+        }
 
         return element;
     };
-
-
 
     /**
      * Remove any errors that are below an input field
      * @param jQuery  $element
      */
-    self.removeError = function($element) {
+    self.removeError = $element => {
         // Call the custom one, if it exists
-        if(self.customRemoveError)
+        if(self.customRemoveError) {
             self.customRemoveError(self, $element);
+        }
 
         // Otherwise do the default
         else {
@@ -157,23 +149,23 @@ function ZeeValinator() {
         }
     };
 
-
-
     /**
      * Show an error message below an input field
      * @param jQuery  $element
      * @param String  message
      */
-    self.setError = function($element, message) {
+    self.setError = ($element, message) => {
         // Call the custom one, if it exists
-        if(self.customSetError)
+        if(self.customSetError) {
             self.customSetError(self, $element, message);
+        }
 
         // Otherwise do the default
         else {
             // Add an error message element, if it's not there yet
-            if($element.next(self.errorMessageSelector).length < 1)
+            if($element.next(self.errorMessageSelector).length < 1) {
                 self.$errorMessageElement.clone().insertAfter($element);
+            }
 
             // Add the error class to the input element
             $element.addClass(self.inputErrorClass)
@@ -190,8 +182,6 @@ function ZeeValinator() {
                 });
         }
     };
-
-
 
     /**
      * Validate given input fields
@@ -223,10 +213,11 @@ function ZeeValinator() {
      *                             }
      * @return  Array  Collection of error elements as objects: {$element, message}
      */
-    self.validate = function(definitions) {
+    self.validate = definitions => {
         // Make sure the definitions are an array
-        if($.type(definitions) != 'array')
+        if($.type(definitions) != 'array') {
             definitions = [definitions];
+        }
 
         // Keep track of the elements that have errors
         // Will contain objects: {$element, message}
@@ -235,8 +226,9 @@ function ZeeValinator() {
         // Loop over the validation definitions
         $.each(definitions, function(definitionIndex, definition) {
             // The same definitions can apply to multiple elements, so make sure the element(s) are an array
-            if($.type(definition.element) != 'array')
+            if($.type(definition.element) != 'array') {
                 definition.element = [definition.element];
+            }
 
             // Loop over the elements and check for errors
             $.each(definition.element, function(elementIndex, element) {
@@ -256,8 +248,9 @@ function ZeeValinator() {
 
                         // See if the element is nullable
                         var nullable = definition.rules.nullable;
-                        if($.type(nullable) == 'function')
+                        if($.type(nullable) == 'function') {
                             nullable = nullable($element);
+                        }
 
                         // Only validate if the value is not nullable,
                         // or if the value is nullable, and the value is not empty
@@ -270,8 +263,9 @@ function ZeeValinator() {
 
                                     // If the message is a function, it means it's conditional
                                     // First execute the function, to see if validation is needed
-                                    if($.type(message) == 'function')
+                                    if($.type(message) == 'function') {
                                         message = message($element);
+                                    }
 
                                     // Only validate, if there is a valid message (which includes a possible option)
                                     if($.type(message) == 'string') {
@@ -312,7 +306,7 @@ function ZeeValinator() {
     /**
      * Set some validation checks, to be used by self.validate
      */
-    (self.setChecks = function() {
+    (self.setChecks = () => {
         self.newCheck(self.defaultChecks.get());
     })();
 }
