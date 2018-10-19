@@ -7,7 +7,7 @@ var sourceFiles = 'src/**/*.js';
 
 
 
-gulp.task('js', function() {
+gulp.task('compile', function() {
     // Normal, unminified version
     gulp.src(sourceFiles)
         .pipe(plumber())
@@ -24,6 +24,6 @@ gulp.task('js', function() {
 
 
 
-gulp.task('default', ['js'], function() {
-    gulp.watch(sourceFiles, ['js']);
+gulp.task('default', ['compile'], function() {
+    gulp.watch(sourceFiles, ['compile']);
 });

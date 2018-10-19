@@ -746,7 +746,7 @@ function ZeeValinatorDefaultChecks() {
             },
             maxNumber: function(value, option) {
                 // Value needs to be a number, and lower than or equal to the option
-                return ( ! isNaN(value - parseFloat(value))  &&  value <= option);
+                return ( ! isNaN(value - parseFloat(value))  &&  value <= parseFloat(option));
             },
             minLength: function(value, option) {
                 // Value needs to have a minimum length
@@ -754,7 +754,7 @@ function ZeeValinatorDefaultChecks() {
             },
             minNumber: function(value, option) {
                 // Value needs to be a number, and higher than or equal to the option
-                return ( ! isNaN(value - parseFloat(value))  &&  value >= option);
+                return ( ! isNaN(value - parseFloat(value))  &&  value >= parseFloat(option));
             },
             personName: function(value, option) {
                 // Value needs to be a valid name
