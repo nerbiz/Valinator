@@ -1,5 +1,9 @@
 # Release notes
 
+## 0.15.1
+
+* Fixed #1: minNumber and maxNumber now parse the option as float.
+
 ## 0.15.0
 
 * Default checks are now defined in a separate class.
