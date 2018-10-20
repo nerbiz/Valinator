@@ -58,6 +58,19 @@ export default function()
     self.customRemoveError = null;
 
     /**
+     * Whether to clear an error when input changes
+     * @type {Boolean}
+     */
+    self.clearErrorOnChange = false;
+
+    /**
+     * Decide whether to clear an error when input changes
+     * @param  {Boolean} clear
+     * @return {void}
+     */
+    self.setClearErrorOnChange = clear => self.clearErrorOnChange = clear;
+
+    /**
      * Set a custom CSS class for input fields that contain an error
      * @param String  cssClass
      */
@@ -173,13 +186,15 @@ export default function()
                 .next(self.errorMessageSelector)
                 .html(message);
 
-            // When the value of the element changes, remove the error
-            $element
-                // Only 1 binding, so remove it first (event namespace is to prevent turning off (all) other event handlers)
-                .off('change.zeeValinator keyup.zeeValinator paste.zeeValinator')
-                .on('change.zeeValinator keyup.zeeValinator paste.zeeValinator', function(event) {
-                    self.removeError($element);
-                });
+            if (self.clearErrorOnChange) {
+                // When the value of the element changes, remove the error
+                $element
+                    // Only 1 binding, so remove it first (event namespace is to prevent turning off (all) other event handlers)
+                    .off('change.zeeValinator keyup.zeeValinator paste.zeeValinator')
+                    .on('change.zeeValinator keyup.zeeValinator paste.zeeValinator', function(event) {
+                        self.removeError($element);
+                    });
+            }
         }
     };
 

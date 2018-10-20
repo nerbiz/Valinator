@@ -10,7 +10,7 @@
   "scripts": {
     "example-watch": "webpack --watch --config webpack.example.js",
     "example": "webpack --config webpack.example.js",
-    "production": "webpack --config webpack.production.js"
+    "build": "npm run example; webpack --config webpack.production.js"
   },
   "devDependencies": {
     "clean-webpack-plugin": "^0.1.19",
