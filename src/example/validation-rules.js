@@ -1,7 +1,4 @@
-const zee = new ZeeValinator();
-const $form = $('form');
-
-const validationRules = [
+export default [
     {
         element: 'first_name',
         rules: {
@@ -16,12 +13,3 @@ const validationRules = [
         },
     },
 ];
-
-$form.on('submit', event => {
-    const messages = zee.validate(validationRules);
-
-    // Don't submit the form if there are errors
-    if (messages.length) {
-        event.preventDefault();
-    }
-});

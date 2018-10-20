@@ -309,4 +309,4 @@ export default function()
     (self.setChecks = () => {
         self.newCheck(self.defaultChecks.get());
     })();
-}
+};

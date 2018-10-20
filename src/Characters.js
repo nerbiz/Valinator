@@ -382,4 +382,4 @@ export default function()
 
         return string;
     };
-}
+};

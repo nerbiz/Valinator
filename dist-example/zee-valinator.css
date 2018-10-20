@@ -1,0 +1,60 @@
+body {
+  color: #333;
+  font-family: 'Open Sans', 'Arial', sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 2; }
+  body,
+  body * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; }
+
+form {
+  margin: 30px auto 0 auto;
+  border-radius: 5px;
+  padding: 30px;
+  width: 100%;
+  max-width: 500px;
+  background-color: #f5f5f5; }
+  form input,
+  form textarea,
+  form select,
+  form button,
+  form optgroup {
+    font-family: inherit;
+    font-size: inherit; }
+  form .zee-valinator-error {
+    border-color: #e56717 !important; }
+  form .zee-valinator-error-message {
+    color: #e56717;
+    font-size: 12px; }
+  form .input-parent:not(:first-of-type) {
+    margin-top: 20px; }
+  form input[type='text'],
+  form input[type='password'] {
+    border: 1px #ccc solid;
+    border-radius: 5px;
+    padding: 10px;
+    width: 100%;
+    color: #2b65ec;
+    line-height: 1;
+    background-color: #fff;
+    outline: none; }
+  form input[type="submit"] {
+    cursor: pointer;
+    margin-top: 20px;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    color: #fff;
+    line-height: 1;
+    background-color: #6698ff;
+    outline: none; }
+  form input[type="submit"]:focus,
+  form input[type="submit"]:hover,
+  form input[type="submit"]:active {
+    background-color: #5cb3ff; }
+
+
+/*# sourceMappingURL=zee-valinator.css.map*/
